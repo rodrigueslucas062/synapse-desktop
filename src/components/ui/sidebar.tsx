@@ -25,7 +25,6 @@ import { SidebarIcon } from "@phosphor-icons/react";
 import {
   SECONDARY_SIDEBAR_COOKIE_NAME,
   SECONDARY_SIDEBAR_KEYBOARD_SHORTCUT,
-  SECONDARY_SIDEBAR_WIDTH,
   SIDEBAR_COOKIE_MAX_AGE,
   SIDEBAR_COOKIE_NAME,
   SIDEBAR_KEYBOARD_SHORTCUT,
@@ -47,7 +46,6 @@ type SidebarContextProps = {
   isMobile: boolean;
   toggleSidebar: () => void;
   toggleSecondarySidebar: () => void;
-  sidebarWidthProps: string;
 };
 
 const SidebarContext = React.createContext<SidebarContextProps | null>(null);
@@ -70,8 +68,6 @@ function SidebarProvider({
   className,
   style,
   children,
-  sidebarWidth = SIDEBAR_WIDTH,
-  secondarySidebarWidth = SECONDARY_SIDEBAR_WIDTH,
   ...props
 }: React.ComponentProps<"div"> & {
   defaultOpen?: boolean;
@@ -79,8 +75,6 @@ function SidebarProvider({
   onOpenChange?: (open: boolean) => void;
   openSecondary?: boolean;
   onOpenSecondaryChange?: (open: boolean) => void;
-  sidebarWidth?: string;
-  secondarySidebarWidth?: string;
 }) {
   const isMobile = useIsMobile();
   const [openMobile, setOpenMobile] = React.useState(false);
@@ -164,10 +158,6 @@ function SidebarProvider({
   // This makes it easier to style the sidebar with Tailwind classes.
   const state = open ? "expanded" : "collapsed";
 
-  // Default sidebar width prop if not provided
-  const primaryWidth = sidebarWidth ?? SIDEBAR_WIDTH;
-  const secondaryWidth = secondarySidebarWidth ?? SECONDARY_SIDEBAR_WIDTH;
-
   const contextValue = React.useMemo<SidebarContextProps>(
     () => ({
       state,
@@ -182,8 +172,6 @@ function SidebarProvider({
       setOpenSecondaryMobile,
       toggleSidebar,
       toggleSecondarySidebar,
-      sidebarWidthProps: primaryWidth,
-      secondarySidebarWidthProps: secondaryWidth,
     }),
     [
       state,
@@ -196,10 +184,6 @@ function SidebarProvider({
       setOpenMobile,
       openSecondaryMobile,
       setOpenSecondaryMobile,
-      toggleSidebar,
-      toggleSecondarySidebar,
-      // sidebarWidthProps: primaryWidth,
-      // secondarySidebarWidthProps: secondaryWidth,
     ]
   );
 
@@ -210,8 +194,7 @@ function SidebarProvider({
           data-slot="sidebar-wrapper"
           style={
             {
-              "--sidebar-width": primaryWidth,
-              "--secondary-sidebar-width": secondaryWidth,
+              "--sidebar-width": SIDEBAR_WIDTH,
               "--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
               ...style,
             } as React.CSSProperties
