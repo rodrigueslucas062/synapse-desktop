@@ -22,14 +22,17 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { SidebarIcon } from "@phosphor-icons/react";
-
-const SIDEBAR_COOKIE_NAME = "sidebar_state";
-const SECONDARY_SIDEBAR_COOKIE_NAME = "secondary_sidebar_state";
-const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
-const SIDEBAR_WIDTH = "16rem";
-const SIDEBAR_WIDTH_MOBILE = "18rem";
-const SIDEBAR_WIDTH_ICON = "3rem";
-const SIDEBAR_KEYBOARD_SHORTCUT = "b";
+import {
+  SECONDARY_SIDEBAR_COOKIE_NAME,
+  SECONDARY_SIDEBAR_KEYBOARD_SHORTCUT,
+  SECONDARY_SIDEBAR_WIDTH,
+  SIDEBAR_COOKIE_MAX_AGE,
+  SIDEBAR_COOKIE_NAME,
+  SIDEBAR_KEYBOARD_SHORTCUT,
+  SIDEBAR_WIDTH,
+  SIDEBAR_WIDTH_ICON,
+  SIDEBAR_WIDTH_MOBILE,
+} from "@/utils/constants.ts";
 
 type SidebarContextProps = {
   state: "expanded" | "collapsed";
@@ -44,6 +47,7 @@ type SidebarContextProps = {
   isMobile: boolean;
   toggleSidebar: () => void;
   toggleSecondarySidebar: () => void;
+  sidebarWidthProps: string;
 };
 
 const SidebarContext = React.createContext<SidebarContextProps | null>(null);
@@ -66,6 +70,8 @@ function SidebarProvider({
   className,
   style,
   children,
+  sidebarWidth = SIDEBAR_WIDTH,
+  secondarySidebarWidth = SECONDARY_SIDEBAR_WIDTH,
   ...props
 }: React.ComponentProps<"div"> & {
   defaultOpen?: boolean;
@@ -73,6 +79,8 @@ function SidebarProvider({
   onOpenChange?: (open: boolean) => void;
   openSecondary?: boolean;
   onOpenSecondaryChange?: (open: boolean) => void;
+  sidebarWidth?: string;
+  secondarySidebarWidth?: string;
 }) {
   const isMobile = useIsMobile();
   const [openMobile, setOpenMobile] = React.useState(false);
@@ -120,7 +128,7 @@ function SidebarProvider({
     return isMobile
       ? setOpenSecondaryMobile((open) => !open)
       : setOpenSecondary((open) => !open);
-  }, [isMobile, setOpenSecondary, setOpenSecondaryMobile]); 
+  }, [isMobile, setOpenSecondary, setOpenSecondaryMobile]);
 
   React.useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -137,9 +145,28 @@ function SidebarProvider({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [toggleSidebar, toggleSecondarySidebar]);
 
+  React.useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (
+        event.key === SECONDARY_SIDEBAR_KEYBOARD_SHORTCUT &&
+        (event.metaKey || event.ctrlKey)
+      ) {
+        event.preventDefault();
+        toggleSecondarySidebar();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [toggleSidebar, toggleSecondarySidebar]);
+
   // We add a state so that we can do data-state="expanded" or "collapsed".
   // This makes it easier to style the sidebar with Tailwind classes.
   const state = open ? "expanded" : "collapsed";
+
+  // Default sidebar width prop if not provided
+  const primaryWidth = sidebarWidth ?? SIDEBAR_WIDTH;
+  const secondaryWidth = secondarySidebarWidth ?? SECONDARY_SIDEBAR_WIDTH;
 
   const contextValue = React.useMemo<SidebarContextProps>(
     () => ({
@@ -155,6 +182,8 @@ function SidebarProvider({
       setOpenSecondaryMobile,
       toggleSidebar,
       toggleSecondarySidebar,
+      sidebarWidthProps: primaryWidth,
+      secondarySidebarWidthProps: secondaryWidth,
     }),
     [
       state,
@@ -169,6 +198,8 @@ function SidebarProvider({
       setOpenSecondaryMobile,
       toggleSidebar,
       toggleSecondarySidebar,
+      // sidebarWidthProps: primaryWidth,
+      // secondarySidebarWidthProps: secondaryWidth,
     ]
   );
 
@@ -179,7 +210,8 @@ function SidebarProvider({
           data-slot="sidebar-wrapper"
           style={
             {
-              "--sidebar-width": SIDEBAR_WIDTH,
+              "--sidebar-width": primaryWidth,
+              "--secondary-sidebar-width": secondaryWidth,
               "--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
               ...style,
             } as React.CSSProperties
