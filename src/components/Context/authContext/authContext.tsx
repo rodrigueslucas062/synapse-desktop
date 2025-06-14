@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       // redireciona se necessário
-      navigate('/');
+      // navigate('/');
     } catch (error: any) {
       let errorMessage = '';
       if (error.code === 'auth/invalid-credential') {
