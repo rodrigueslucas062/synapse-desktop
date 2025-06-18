@@ -1,16 +1,25 @@
-import { createContext, useContext, useState, ReactNode } from "react";
 import * as Tabs from "@radix-ui/react-tabs";
+import { createContext, useContext, useState, ReactNode } from "react";
 
-type Tab = {
+export type TabType =
+  | "new-tab"
+  | "synapse"
+  | "documents"
+  | "tasks"
+  | "notepad"
+  | "jamboard";
+
+export type Tab = {
   id: string;
   label: string;
+  type: TabType;
 };
 
 type TabsContextType = {
   tabs: Tab[];
   activeTab: string;
   setActiveTab: (id: string) => void;
-  addTab: (id: string, label: string) => void;
+  addTab: (id: string, label: string, type?: TabType) => void;
   closeTab: (id: string) => void;
 };
 
@@ -18,16 +27,19 @@ const TabsContext = createContext<TabsContextType | undefined>(undefined);
 
 export const TabsProvider = ({ children }: { children: ReactNode }) => {
   const [tabs, setTabs] = useState<Tab[]>([
-    { id: "new-tab", label: "Nova aba" },
+    { id: "new-tab", label: "Nova aba", type: "new-tab" },
   ]);
-  const [activeTab, setActiveTab] = useState("new-tab");
+  const [activeTab, setActiveTab] = useState<string>("new-tab");
 
-  const addTab = (id: string, label: string) => {
-    setTabs((prev) =>
-      prev.some((tab) => tab.id === id) ? prev : [...prev, { id, label }]
-    );
-    setActiveTab(id);
-  };
+const addTab = (id: string, label: string, type: TabType = "new-tab") => {
+  setTabs((prev) => {
+    const isUniqueType = type !== "new-tab";
+    const alreadyExists = prev.some((tab) => tab.type === type);
+    if (isUniqueType && alreadyExists) return prev;
+
+    return [...prev, { id, label, type }];
+  });
+};
 
   const closeTab = (id: string) => {
     setTabs((prevTabs) => {
@@ -36,7 +48,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       if (updatedTabs.length === 0) {
         const newId = `tab-${Date.now()}`;
         setActiveTab(newId);
-        return [{ id: newId, label: "Nova aba" }];
+        return [{ id: newId, label: "Nova aba", type: "new-tab" }];
       }
 
       if (activeTab === id) {
