@@ -1,4 +1,3 @@
-import * as Tabs from "@radix-ui/react-tabs";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import { NavigationTabs } from "../Tabs";
 import {
@@ -6,51 +5,23 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "../ui/sidebar";
-import {
-  CalendarDotIcon,
-  FileMagnifyingGlassIcon,
-  GraphIcon,
-} from "@phosphor-icons/react";
 import { Calendar } from "../Calendar";
 import { useState } from "react";
 import { AuthProvider } from "../Context";
 import { ServiceSidebar } from "../Sidebars/ServiceSidebar";
 import { AppSidebar } from "../Sidebars/Sidebar";
+import { TabsProvider } from "../Context/tabsContext/tabsContext";
 
 type LayoutProps = {
   children: React.ReactNode;
 };
-
-interface SidebarItem {
-  title: string;
-  url: string;
-  icon: React.ComponentType;
-}
-
-const item: SidebarItem[] = [
-  {
-    title: "Inbox",
-    url: "#",
-    icon: GraphIcon,
-  },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: CalendarDotIcon,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: FileMagnifyingGlassIcon,
-  },
-];
 
 export const Layout = ({ children }: LayoutProps) => {
   const [date, setDate] = useState<Date | undefined>(new Date());
 
   return (
     <AuthProvider>
-      <Tabs.Root defaultValue="new-tab">
+      <TabsProvider>
         <Tooltip.Provider>
           <SidebarProvider>
             <div className="flex h-screen w-full bg-zinc-900">
@@ -81,7 +52,7 @@ export const Layout = ({ children }: LayoutProps) => {
             </div>
           </SidebarProvider>
         </Tooltip.Provider>
-      </Tabs.Root>
+      </TabsProvider>
     </AuthProvider>
   );
 };
