@@ -1,4 +1,4 @@
-import { PlusIcon, X, XIcon } from "@phosphor-icons/react";
+import { PlusIcon, XIcon } from "@phosphor-icons/react";
 import * as Tabs from "@radix-ui/react-tabs";
 import { CustomTooltip } from "./Tooltip";
 import { useTabs } from "./Context/tabsContext/tabsContext";
