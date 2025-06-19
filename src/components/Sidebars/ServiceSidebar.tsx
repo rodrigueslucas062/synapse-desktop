@@ -16,7 +16,7 @@ import { useTabs } from "../Context/tabsContext/tabsContext";
 
 const navItems = [
   {
-    tab: "home",
+    tab: "notion",
     icon: <BrainIcon size={20} weight="duotone" />,
     color: "text-emerald-500",
     label: "Notion",

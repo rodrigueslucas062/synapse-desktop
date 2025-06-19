@@ -17,8 +17,8 @@ export const Synapse = () => {
               </p>
             </div>
           )}
-          {tab.type === "home" && <ToDo />}
           {tab.type === "notion" && <div>Notion content</div>}
+          {tab.type === "tasks" && <ToDo />}
           {tab.type === "notepad" && <div>Notepad content</div>}
           {tab.type === "jamboard" && <div>Jamboard content</div>}
         </Tabs.Content>

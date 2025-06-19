@@ -3,8 +3,8 @@ import { createContext, useContext, useState, ReactNode } from "react";
 
 export type TabType =
   | "new-tab"
-  | "home"
   | "notion"
+  | "tasks"
   | "notepad"
   | "jamboard";
 
