@@ -17,16 +17,17 @@ export const NavigationTabs = () => {
               <Tabs.Trigger
                 value={tab.id}
                 className={`flex items-center min-w-30 justify-between gap-2 px-3 py-1 rounded-md group text-white cursor-pointer transition-colors duration-200
-        ${isActive ? "bg-zinc-800" : "hover:bg-zinc-700"}`}
+                ${isActive ? "bg-zinc-800" : "hover:bg-zinc-700"}`}
               >
                 {tab.label}
                 <button
-                  onClick={(e) => {
+                  onMouseDown={(e) => {
+                    e.preventDefault();
                     e.stopPropagation();
-                    closeTab(tab.id);
                   }}
+                  onClick={() => closeTab(tab.id)}
                   className={`w-4 h-4 flex items-center justify-center text-zinc-400 hover:text-red-500 bg-zinc-900 rounded text-xs transition
-  ${isActive ? "visible" : "invisible group-hover:visible"}`}
+                  ${isActive ? "visible" : "invisible group-hover:visible"}`}
                 >
                   <XIcon size={10} />
                 </button>
