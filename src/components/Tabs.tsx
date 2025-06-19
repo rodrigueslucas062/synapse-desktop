@@ -38,7 +38,7 @@ export const NavigationTabs = () => {
 
       <CustomTooltip tooltipText="Nova aba" side="bottom">
         <button
-          onClick={() => addTab(`tab-${Date.now()}`, "Nova aba")}
+          onClick={() => addTab(`${crypto.randomUUID()}`, "Nova aba")}
           className="h-fit p-2 bg-none text-white rounded-md cursor-pointer
             hover:bg-zinc-700 transition-colors duration-200"
         >
