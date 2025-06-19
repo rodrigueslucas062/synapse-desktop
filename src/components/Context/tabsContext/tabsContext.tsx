@@ -3,9 +3,8 @@ import { createContext, useContext, useState, ReactNode } from "react";
 
 export type TabType =
   | "new-tab"
-  | "synapse"
-  | "documents"
-  | "tasks"
+  | "home"
+  | "notion"
   | "notepad"
   | "jamboard";
 
@@ -27,26 +26,28 @@ const TabsContext = createContext<TabsContextType | undefined>(undefined);
 
 export const TabsProvider = ({ children }: { children: ReactNode }) => {
   const [tabs, setTabs] = useState<Tab[]>([
-    { id: "new-tab", label: "Nova aba", type: "new-tab" },
+    { id: crypto.randomUUID(), label: "Nova aba", type: "new-tab" },
   ]);
   const [activeTab, setActiveTab] = useState<string>("new-tab");
 
-const addTab = (id: string, label: string, type: TabType = "new-tab") => {
-  setTabs((prev) => {
-    const isUniqueType = type !== "new-tab";
-    const alreadyExists = prev.some((tab) => tab.type === type);
-    if (isUniqueType && alreadyExists) return prev;
+  console.log("Tabs initialized:", tabs);
+  const addTab = (id: string, label: string, type: TabType = "new-tab") => {
+    setTabs((prev) => {
+      const isUniqueType = type !== "new-tab";
+      const alreadyExists = prev.some((tab) => tab.type === type);
+      if (isUniqueType && alreadyExists) return prev;
 
-    return [...prev, { id, label, type }];
-  });
-};
+      return [...prev, { id, label, type }];
+    });
+    setActiveTab(id);
+  };
 
   const closeTab = (id: string) => {
     setTabs((prevTabs) => {
       const updatedTabs = prevTabs.filter((tab) => tab.id !== id);
 
       if (updatedTabs.length === 0) {
-        const newId = `tab-${Date.now()}`;
+        const newId = crypto.randomUUID();
         setActiveTab(newId);
         return [{ id: newId, label: "Nova aba", type: "new-tab" }];
       }
