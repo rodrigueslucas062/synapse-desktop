@@ -31,6 +31,9 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   ]);
   const [activeTab, setActiveTab] = useState<string>("");
 
+  console.log("activeTab", tabs);
+  console.log("Aba atual", activeTab);
+
   useEffect(() => {
     if (!activeTab && tabs.length > 0) {
       setActiveTab(tabs[0].id);
@@ -41,37 +44,57 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
     const isUniqueType = type !== "new-tab";
     const existingIndex = tabs.findIndex((tab) => tab.type === type);
 
-    const isInFirstTab = activeTab === tabs[0]?.id;
-
     if (isUniqueType && existingIndex !== -1) {
       setActiveTab(tabs[existingIndex].id);
       return;
     }
 
-    if (isInFirstTab && tabs.length === 1 && tabs[0].type === "new-tab") {
+    const onlyOneTab = tabs.length === 1;
+    const onlyOneNewTab = onlyOneTab && tabs[0].type === "new-tab";
+
+    if (isUniqueType && onlyOneNewTab) {
       const newTab = { id, label, type };
       setTabs([newTab]);
       setActiveTab(id);
-    } else {
-      setTabs((prev) => [...prev, { id, label, type }]);
-      setActiveTab(id);
+      return;
     }
+
+    setTabs((prev) => [...prev, { id, label, type }]);
+    setActiveTab(id);
   };
 
   const closeTab = (id: string) => {
+    console.log("Fechando aba:", id);
+
     setTabs((prevTabs) => {
       const index = prevTabs.findIndex((tab) => tab.id === id);
+      const isActive = id === activeTab;
+
       const updatedTabs = prevTabs.filter((tab) => tab.id !== id);
+      console.log("Aba ativa:", activeTab);
+      console.log("Index da aba sendo fechada:", index);
+      console.log("Aba era ativa?", isActive);
+      console.log("Abas restantes:", updatedTabs);
 
       if (updatedTabs.length === 0) {
         const newId = crypto.randomUUID();
+        console.log("Última aba fechada. Criando nova:", newId);
         setActiveTab(newId);
         return [{ id: newId, label: "Nova aba", type: "new-tab" }];
       }
 
-      if (id === activeTab) {
-        const fallbackTab = updatedTabs[index - 1] ?? updatedTabs[0];
+      if (isActive) {
+        let fallbackTab;
+        if (index > 0) {
+          fallbackTab = updatedTabs[index - 1];
+        } else {
+          fallbackTab = updatedTabs[updatedTabs.length - 1];
+        }
+
+        console.log("Trocando para fallbackTab:", fallbackTab.id);
         setActiveTab(fallbackTab.id);
+      } else {
+        console.log("Aba fechada não era ativa. Nenhuma troca.");
       }
 
       return updatedTabs;
