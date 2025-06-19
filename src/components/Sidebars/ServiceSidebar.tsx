@@ -52,7 +52,7 @@ export function ServiceSidebar({
     if (existingTab) {
       setActiveTab(existingTab.id);
     } else {
-      const id = `${tabType}-${Date.now()}`;
+      const id = crypto.randomUUID();
       addTab(id, label, tabType as any);
       setActiveTab(id);
     }
