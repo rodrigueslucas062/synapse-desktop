@@ -8,7 +8,6 @@ import {
 } from "@phosphor-icons/react";
 import { useEffect, useRef } from "react";
 import { ptBR } from "date-fns/locale";
-import { format } from "date-fns";
 
 export function Calendar({
   className,
