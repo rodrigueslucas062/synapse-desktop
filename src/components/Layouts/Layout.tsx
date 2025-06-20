@@ -15,7 +15,7 @@ export const Layout = ({ children }: LayoutProps) => {
 
   return (
     <ProviderLayout>
-      <div className="flex h-screen w-full bg-zinc-900">
+      <div className="flex h-screen w-full bg-zinc-900 select-none">
         <ServiceSidebar />
         <div className="w-full flex flex-col gap-4">
           <div className="left-2 flex justify-between px-2 pt-1">

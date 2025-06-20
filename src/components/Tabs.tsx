@@ -16,7 +16,7 @@ export const NavigationTabs = () => {
             <CustomTooltip tooltipText={tab.label} side="bottom">
               <Tabs.Trigger
                 value={tab.id}
-                className={`flex items-center min-w-30 justify-between gap-2 px-3 py-1 rounded-md group text-white cursor-pointer transition-colors duration-200
+                className={`flex items-center min-w-30 justify-between gap-2 px-3 py-1 rounded-md group text-white transition-colors duration-200
                 ${isActive ? "bg-zinc-800" : "hover:bg-zinc-700"}`}
               >
                 {tab.label}
@@ -40,7 +40,7 @@ export const NavigationTabs = () => {
       <CustomTooltip tooltipText="Nova aba" side="bottom">
         <button
           onClick={() => addTab(`${crypto.randomUUID()}`, "Nova aba")}
-          className="h-fit p-2 bg-none text-white rounded-md cursor-pointer
+          className="h-fit p-2 bg-none text-white rounded-md
             hover:bg-zinc-700 transition-colors duration-200"
         >
           <PlusIcon size={14} weight="regular" />
