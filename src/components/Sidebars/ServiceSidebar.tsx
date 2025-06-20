@@ -1,18 +1,22 @@
+import * as React from "react";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarHeader,
   useSidebar,
 } from "@/components/ui/sidebar";
 import {
+  BrainIcon,
   ChalkboardSimpleIcon,
   ListChecksIcon,
   NotepadIcon,
-  BrainIcon,
 } from "@phosphor-icons/react";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import { useTabs } from "../Context/tabsContext/tabsContext";
+import { UserConfig } from "../UserConfig";
 
 const navItems = [
   {
@@ -60,7 +64,11 @@ export function ServiceSidebar({
   };
 
   return (
-    <Sidebar collapsible="icon" className="overflow-hidden" {...props}>
+    <Sidebar
+      collapsible="icon"
+      className="overflow-hidden *:data-[sidebar=sidebar]:flex-row"
+      {...props}
+    >
       <Sidebar collapsible="none" className="w-fit border-r bg-zinc-800">
         <SidebarContent className="max-w-fit py-4">
           <SidebarGroup>
@@ -92,6 +100,27 @@ export function ServiceSidebar({
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
+        <SidebarFooter>
+          <div className="text-xs text-gray-500">v 0.1.0</div>
+        </SidebarFooter>
+      </Sidebar>
+
+      <Sidebar collapsible="none" className="hidden flex-1 md:flex">
+        <SidebarHeader className="gap-3.5 border-b p-2">
+          <div className="flex w-full items-center justify-between">
+            <span className="text-sm font-medium">teste</span>
+          </div>
+        </SidebarHeader>
+        <SidebarContent>
+          <SidebarGroup className="px-0">
+            <SidebarGroupContent>
+              <div>teste</div>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
+        <SidebarFooter>
+          <UserConfig />
+        </SidebarFooter>
       </Sidebar>
     </Sidebar>
   );
