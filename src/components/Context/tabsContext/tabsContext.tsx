@@ -31,9 +31,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   ]);
   const [activeTab, setActiveTab] = useState<string>("");
 
-  console.log("activeTab", tabs);
-  console.log("Aba atual", activeTab);
-
   useEffect(() => {
     if (!activeTab && tabs.length > 0) {
       setActiveTab(tabs[0].id);
@@ -64,21 +61,13 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const closeTab = (id: string) => {
-    console.log("Fechando aba:", id);
-
     setTabs((prevTabs) => {
       const index = prevTabs.findIndex((tab) => tab.id === id);
       const isActive = id === activeTab;
 
       const updatedTabs = prevTabs.filter((tab) => tab.id !== id);
-      console.log("Aba ativa:", activeTab);
-      console.log("Index da aba sendo fechada:", index);
-      console.log("Aba era ativa?", isActive);
-      console.log("Abas restantes:", updatedTabs);
-
       if (updatedTabs.length === 0) {
         const newId = crypto.randomUUID();
-        console.log("Última aba fechada. Criando nova:", newId);
         setActiveTab(newId);
         return [{ id: newId, label: "Nova aba", type: "new-tab" }];
       }
@@ -90,11 +79,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
         } else {
           fallbackTab = updatedTabs[updatedTabs.length - 1];
         }
-
-        console.log("Trocando para fallbackTab:", fallbackTab.id);
         setActiveTab(fallbackTab.id);
-      } else {
-        console.log("Aba fechada não era ativa. Nenhuma troca.");
       }
 
       return updatedTabs;
