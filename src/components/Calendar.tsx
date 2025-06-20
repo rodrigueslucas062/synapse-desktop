@@ -1,8 +1,14 @@
-import { DayButton, DayPicker, getDefaultClassNames } from "react-day-picker"
-import { cn } from "@/lib/utils"
-import { Button, buttonVariants } from "@/components/ui/button"
-import { CaretDownIcon, CaretLeftIcon, CaretRightIcon } from "@phosphor-icons/react"
-import { useEffect, useRef } from "react"
+import { DayButton, DayPicker, getDefaultClassNames } from "react-day-picker";
+import { cn } from "@/lib/utils";
+import { Button, buttonVariants } from "@/components/ui/button";
+import {
+  CaretDownIcon,
+  CaretLeftIcon,
+  CaretRightIcon,
+} from "@phosphor-icons/react";
+import { useEffect, useRef } from "react";
+import { ptBR } from "date-fns/locale";
+import { format } from "date-fns";
 
 export function Calendar({
   className,
@@ -14,12 +20,13 @@ export function Calendar({
   components,
   ...props
 }: React.ComponentProps<typeof DayPicker> & {
-  buttonVariant?: React.ComponentProps<typeof Button>["variant"]
+  buttonVariant?: React.ComponentProps<typeof Button>["variant"];
 }) {
-  const defaultClassNames = getDefaultClassNames()
+  const defaultClassNames = getDefaultClassNames();
 
   return (
     <DayPicker
+      locale={ptBR}
       showOutsideDays={showOutsideDays}
       className={cn(
         "bg-background group/calendar p-3 [--cell-size:--spacing(8)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
@@ -30,7 +37,7 @@ export function Calendar({
       captionLayout={captionLayout}
       formatters={{
         formatMonthDropdown: (date) =>
-          date.toLocaleString("default", { month: "short" }),
+          date.toLocaleString("default", { month: "long" }),
         ...formatters,
       }}
       classNames={{
@@ -123,24 +130,39 @@ export function Calendar({
               className={cn(className)}
               {...props}
             />
-          )
+          );
         },
         Chevron: ({ className, orientation, ...props }) => {
           if (orientation === "left") {
             return (
-              <CaretLeftIcon size={20} weight="duotone" className={cn("size-4", className)} {...props} />
-            )
+              <CaretLeftIcon
+                size={20}
+                weight="duotone"
+                className={cn("size-4", className)}
+                {...props}
+              />
+            );
           }
 
           if (orientation === "right") {
             return (
-              <CaretRightIcon size={20} weight="duotone" className={cn("size-4", className)} {...props} />
-            )
+              <CaretRightIcon
+                size={20}
+                weight="duotone"
+                className={cn("size-4", className)}
+                {...props}
+              />
+            );
           }
 
           return (
-            <CaretDownIcon size={20} weight="duotone" className={cn("size-4", className)} {...props} />
-          )
+            <CaretDownIcon
+              size={20}
+              weight="duotone"
+              className={cn("size-4", className)}
+              {...props}
+            />
+          );
         },
         DayButton: CalendarDayButton,
         WeekNumber: ({ children, ...props }) => {
@@ -150,13 +172,13 @@ export function Calendar({
                 {children}
               </div>
             </td>
-          )
+          );
         },
         ...components,
       }}
       {...props}
     />
-  )
+  );
 }
 
 export function CalendarDayButton({
@@ -165,12 +187,12 @@ export function CalendarDayButton({
   modifiers,
   ...props
 }: React.ComponentProps<typeof DayButton>) {
-  const defaultClassNames = getDefaultClassNames()
+  const defaultClassNames = getDefaultClassNames();
 
-  const ref = useRef<HTMLButtonElement>(null)
+  const ref = useRef<HTMLButtonElement>(null);
   useEffect(() => {
-    if (modifiers.focused) ref.current?.focus()
-  }, [modifiers.focused])
+    if (modifiers.focused) ref.current?.focus();
+  }, [modifiers.focused]);
 
   return (
     <Button
@@ -194,5 +216,5 @@ export function CalendarDayButton({
       )}
       {...props}
     />
-  )
+  );
 }
