@@ -26,29 +26,74 @@ type TabsContextType = {
 const TabsContext = createContext<TabsContextType | undefined>(undefined);
 
 export const TabsProvider = ({ children }: { children: ReactNode }) => {
-  const [tabs, setTabs] = useState<Tab[]>([
-    { id: crypto.randomUUID(), label: "Nova aba", type: "new-tab" },
-  ]);
+  const [tabs, setTabs] = useState<Tab[]>([]);
   const [activeTab, setActiveTab] = useState<string>("");
 
+  const ensureDefaultTab = () => {
+    const newId = crypto.randomUUID();
+    const defaultTab: Tab = {
+      id: crypto.randomUUID(),
+      label: "Nova aba",
+      type: "new-tab",
+    };
+    setTabs([defaultTab]);
+    setActiveTab(newId);
+    return { tabs: [defaultTab], activeTab: newId };
+  };
+
   useEffect(() => {
-    if (!activeTab && tabs.length > 0) {
-      setActiveTab(tabs[0].id);
+    try {
+      const storedTabs = localStorage.getItem("tabs");
+      const storedActiveTab = localStorage.getItem("activeTab");
+
+      if (storedTabs) {
+        const parsedTabs: Tab[] = JSON.parse(storedTabs);
+        if (parsedTabs.length === 0) {
+          const fallback = ensureDefaultTab();
+          localStorage.setItem("tabs", JSON.stringify(fallback.tabs));
+          localStorage.setItem("activeTab", fallback.activeTab);
+          return;
+        }
+
+        setTabs(parsedTabs);
+
+        const activeId =
+          storedActiveTab &&
+          parsedTabs.find((tab) => tab.id === storedActiveTab)
+            ? storedActiveTab
+            : parsedTabs[0].id;
+
+        setActiveTab(activeId);
+      } else {
+        const fallback = ensureDefaultTab();
+        localStorage.setItem("tabs", JSON.stringify(fallback.tabs));
+        localStorage.setItem("activeTab", fallback.activeTab);
+      }
+    } catch (err) {
+      console.error("Erro ao restaurar abas:", err);
+      ensureDefaultTab();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (tabs.length > 0) {
+      localStorage.setItem("tabs", JSON.stringify(tabs));
+    }
+    if (activeTab) {
+      localStorage.setItem("activeTab", activeTab);
     }
   }, [tabs, activeTab]);
 
   const addTab = (id: string, label: string, type: TabType = "new-tab") => {
     const isUniqueType = type !== "new-tab";
-    const existingIndex = tabs.findIndex((tab) => tab.type === type);
+    const existing = tabs.find((tab) => tab.type === type);
 
-    if (isUniqueType && existingIndex !== -1) {
-      setActiveTab(tabs[existingIndex].id);
+    if (isUniqueType && existing) {
+      setActiveTab(existing.id);
       return;
     }
 
-    const onlyOneTab = tabs.length === 1;
-    const onlyOneNewTab = onlyOneTab && tabs[0].type === "new-tab";
-
+    const onlyOneNewTab = tabs.length === 1 && tabs[0].type === "new-tab";
     if (isUniqueType && onlyOneNewTab) {
       const newTab = { id, label, type };
       setTabs([newTab]);
@@ -68,17 +113,18 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
       const updatedTabs = prevTabs.filter((tab) => tab.id !== id);
       if (updatedTabs.length === 0) {
         const newId = crypto.randomUUID();
+        const defaultTab: Tab = {
+          id: newId,
+          label: "Nova aba",
+          type: "new-tab",
+        };
         setActiveTab(newId);
-        return [{ id: newId, label: "Nova aba", type: "new-tab" }];
+
+        return [defaultTab];
       }
 
       if (isActive) {
-        let fallbackTab;
-        if (index > 0) {
-          fallbackTab = updatedTabs[index - 1];
-        } else {
-          fallbackTab = updatedTabs[updatedTabs.length - 1];
-        }
+        const fallbackTab = index > 0 ? updatedTabs[index - 1] : updatedTabs[0];
         setActiveTab(fallbackTab.id);
       }
 
