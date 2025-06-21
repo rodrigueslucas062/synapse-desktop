@@ -21,10 +21,10 @@ const loginSchema = z.object({
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
-export default function LoginPage() {
+export default function LoginForm() {
   const [isSignIn, setIsSignIn] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const { isAuthenticated, login } = useAuth();
+  const { login } = useAuth();
 
   const {
     control,
@@ -61,7 +61,7 @@ export default function LoginPage() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-6 w-full max-w-md bg-zinc-800 p-6 md:p-10 rounded-lg"
+      className="space-y-6 w-full bg-zinc-800 p-6 md:p-10 rounded-lg"
     >
       <div className="space-y-2">
         <h2 className="text-white text-2xl font-semibold tracking-wider">
