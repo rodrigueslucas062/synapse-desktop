@@ -16,7 +16,7 @@ import {
 } from "@phosphor-icons/react";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import { useTabs } from "../Context/tabsContext/tabsContext";
-import { UserConfig } from "../UserConfig";
+import { UserConfig } from "../User/UserCard";
 
 const navItems = [
   {
