@@ -6,6 +6,7 @@ import {
   ReactNode,
   useEffect,
 } from "react";
+import { load } from '@tauri-apps/plugin-store';
 
 export type TabType = "new-tab" | "notion" | "tasks" | "notepad" | "jamboard";
 
@@ -25,6 +26,8 @@ type TabsContextType = {
 
 const TabsContext = createContext<TabsContextType | undefined>(undefined);
 
+const store = await load('store.json', { autoSave: true });
+
 export const TabsProvider = ({ children }: { children: ReactNode }) => {
   const [tabs, setTabs] = useState<Tab[]>([]);
   const [activeTab, setActiveTab] = useState<string>("");
@@ -32,7 +35,7 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   const ensureDefaultTab = () => {
     const newId = crypto.randomUUID();
     const defaultTab: Tab = {
-      id: crypto.randomUUID(),
+      id: newId,
       label: "Nova aba",
       type: "new-tab",
     };
@@ -42,46 +45,39 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    try {
-      const storedTabs = localStorage.getItem("tabs");
-      const storedActiveTab = localStorage.getItem("activeTab");
+    (async () => {
+      try {
+        const storedTabs = await store.get<Tab[]>("tabs");
+        const storedActiveTab = await store.get<string>("activeTab");
 
-      if (storedTabs) {
-        const parsedTabs: Tab[] = JSON.parse(storedTabs);
-        if (parsedTabs.length === 0) {
+        if (storedTabs && storedTabs.length > 0) {
+          setTabs(storedTabs);
+
+          const activeId =
+            storedActiveTab && storedTabs.find((tab) => tab.id === storedActiveTab)
+              ? storedActiveTab
+              : storedTabs[0].id;
+
+          setActiveTab(activeId);
+        } else {
           const fallback = ensureDefaultTab();
-          localStorage.setItem("tabs", JSON.stringify(fallback.tabs));
-          localStorage.setItem("activeTab", fallback.activeTab);
-          return;
+          await store.set("tabs", fallback.tabs);
+          await store.set("activeTab", fallback.activeTab);
+          await store.save();
         }
-
-        setTabs(parsedTabs);
-
-        const activeId =
-          storedActiveTab &&
-          parsedTabs.find((tab) => tab.id === storedActiveTab)
-            ? storedActiveTab
-            : parsedTabs[0].id;
-
-        setActiveTab(activeId);
-      } else {
-        const fallback = ensureDefaultTab();
-        localStorage.setItem("tabs", JSON.stringify(fallback.tabs));
-        localStorage.setItem("activeTab", fallback.activeTab);
+      } catch (err) {
+        console.error("Erro ao carregar tabs do Store:", err);
+        ensureDefaultTab();
       }
-    } catch (err) {
-      console.error("Erro ao restaurar abas:", err);
-      ensureDefaultTab();
-    }
+    })();
   }, []);
 
   useEffect(() => {
-    if (tabs.length > 0) {
-      localStorage.setItem("tabs", JSON.stringify(tabs));
-    }
-    if (activeTab) {
-      localStorage.setItem("activeTab", activeTab);
-    }
+    (async () => {
+      if (tabs.length > 0) await store.set("tabs", tabs);
+      if (activeTab) await store.set("activeTab", activeTab);
+      await store.save();
+    })();
   }, [tabs, activeTab]);
 
   const addTab = (id: string, label: string, type: TabType = "new-tab") => {
@@ -119,7 +115,6 @@ export const TabsProvider = ({ children }: { children: ReactNode }) => {
           type: "new-tab",
         };
         setActiveTab(newId);
-
         return [defaultTab];
       }
 
