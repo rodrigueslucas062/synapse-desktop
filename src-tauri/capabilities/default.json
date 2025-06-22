@@ -8,6 +8,11 @@
   "permissions": [
     "core:default",
     "opener:default",
-    "store:default"
+    "store:default",
+    "process:default"
+  ],
+    "updater": [
+    "updater:allow-check",
+    "updater:allow-download-and-install"
   ]
 }
