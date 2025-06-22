@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 .env
 src-tauri/keys/private.pem
+~/.tauri/myapp.key
+~/.tauri/myapp.key.pub
