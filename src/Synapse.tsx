@@ -1,6 +1,7 @@
 import * as Tabs from "@radix-ui/react-tabs";
 import { ToDo } from "./components/ToDo";
 import { useTabs } from "./components/Context/tabsContext/tabsContext";
+import NotepadCards from "./components/StickyNotes/NotepadCards";
 
 export const Synapse = () => {
   const { tabs } = useTabs();
@@ -19,7 +20,7 @@ export const Synapse = () => {
           )}
           {tab.type === "notion" && <div>Notion content</div>}
           {tab.type === "tasks" && <ToDo />}
-          {tab.type === "notepad" && <div>Notepad content</div>}
+          {tab.type === "notepad" && <NotepadCards />}
           {tab.type === "jamboard" && <div>Jamboard content</div>}
         </Tabs.Content>
       ))}
