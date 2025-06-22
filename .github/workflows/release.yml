@@ -8,6 +8,7 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    environment: TAURI_ENVIROMENT
     permissions:
       contents: write
     steps:
