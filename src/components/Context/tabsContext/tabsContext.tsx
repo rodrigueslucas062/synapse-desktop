@@ -1,12 +1,6 @@
 import * as Tabs from "@radix-ui/react-tabs";
-import {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  useEffect,
-} from "react";
-import { load } from '@tauri-apps/plugin-store';
+import { createContext, useContext, ReactNode } from "react";
+import { useStoreTabs } from "@/hooks/useStoreTabs";
 
 export type TabType = "new-tab" | "notion" | "tasks" | "notepad" | "jamboard";
 
@@ -26,59 +20,8 @@ type TabsContextType = {
 
 const TabsContext = createContext<TabsContextType | undefined>(undefined);
 
-const store = await load('store.json', { autoSave: true });
-
 export const TabsProvider = ({ children }: { children: ReactNode }) => {
-  const [tabs, setTabs] = useState<Tab[]>([]);
-  const [activeTab, setActiveTab] = useState<string>("");
-
-  const ensureDefaultTab = () => {
-    const newId = crypto.randomUUID();
-    const defaultTab: Tab = {
-      id: newId,
-      label: "Nova aba",
-      type: "new-tab",
-    };
-    setTabs([defaultTab]);
-    setActiveTab(newId);
-    return { tabs: [defaultTab], activeTab: newId };
-  };
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const storedTabs = await store.get<Tab[]>("tabs");
-        const storedActiveTab = await store.get<string>("activeTab");
-
-        if (storedTabs && storedTabs.length > 0) {
-          setTabs(storedTabs);
-
-          const activeId =
-            storedActiveTab && storedTabs.find((tab) => tab.id === storedActiveTab)
-              ? storedActiveTab
-              : storedTabs[0].id;
-
-          setActiveTab(activeId);
-        } else {
-          const fallback = ensureDefaultTab();
-          await store.set("tabs", fallback.tabs);
-          await store.set("activeTab", fallback.activeTab);
-          await store.save();
-        }
-      } catch (err) {
-        console.error("Erro ao carregar tabs do Store:", err);
-        ensureDefaultTab();
-      }
-    })();
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      if (tabs.length > 0) await store.set("tabs", tabs);
-      if (activeTab) await store.set("activeTab", activeTab);
-      await store.save();
-    })();
-  }, [tabs, activeTab]);
+  const { tabs, activeTab, setTabs, setActiveTab } = useStoreTabs();
 
   const addTab = (id: string, label: string, type: TabType = "new-tab") => {
     const isUniqueType = type !== "new-tab";
