@@ -4,6 +4,7 @@ import { useAuth } from "../Context";
 import LoginForm from "../LoginForm";
 import { SignInIcon, SignOutIcon } from "@phosphor-icons/react";
 import * as Tabs from "@radix-ui/react-tabs";
+import { checkForUpdate } from "@/utils/UpdateChecker";
 
 export const UserConfig = () => {
   const { isAuthenticated, currentUser, logout } = useAuth();
@@ -44,7 +45,6 @@ export const UserConfig = () => {
   const UserConfig = () => {
     return (
       <Tabs.Root defaultValue="user" orientation="vertical" className="flex">
-        {/* Sidebar de abas */}
         <div className="flex flex-col justify-between border-r pr-4 min-w-[200px]">
           <Tabs.List className="flex flex-col space-y-1">
             <Tabs.Trigger
@@ -70,15 +70,14 @@ export const UserConfig = () => {
           </button>
         </div>
 
-        {/* Conteúdo das abas */}
         <div className="p-4">
           <Tabs.Content value="user" className="space-y-6">
             <h1 className="text-2xl font-semibold">Perfil do Usuário</h1>
             <div className="flex items-center space-x-4">
               <Avatar radius="full" src={currentUser?.photoURL} fallback="LR" />
               <div>
-                <p className="text-lg font-semibold">Lucas Rodrigues</p>
-                <p className="text-gray-600">lucas@email.com</p>
+                <p className="text-lg font-semibold">{currentUser?.name}</p>
+                <p className="text-gray-600">{currentUser?.email}</p>
               </div>
             </div>
           </Tabs.Content>
@@ -105,6 +104,18 @@ export const UserConfig = () => {
                   <option>Ativadas</option>
                   <option>Desativadas</option>
                 </select>
+              </div>
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                />
+                <label className="block text-sm text-gray-600 mb-1">
+                  Buscar atualizações automaticamente
+                </label>
+                <button onClick={checkForUpdate} className="text-blue-600 hover:underline text-sm">
+                  Buscar Atualizações
+                </button>
               </div>
             </div>
 

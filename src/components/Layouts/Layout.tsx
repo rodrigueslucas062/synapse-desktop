@@ -5,12 +5,14 @@ import { useState } from "react";
 import { ServiceSidebar } from "../Sidebars/ServiceSidebar";
 import { AppSidebar } from "../Sidebars/Sidebar";
 import { ProviderLayout } from "./ProviderLayout";
+import { useAutoUpdate } from "@/utils/UpdateChecker";
 
 type LayoutProps = {
   children: React.ReactNode;
 };
 
 export const Layout = ({ children }: LayoutProps) => {
+  useAutoUpdate();
   const [date, setDate] = useState<Date | undefined>(new Date());
 
   return (
