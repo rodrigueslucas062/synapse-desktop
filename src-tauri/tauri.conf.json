@@ -29,7 +29,7 @@
       "endpoints": [
         "https://github.com/rodrigueslucas062/synapse-desktop/releases/download/latest/latest.json"
       ],
-      "publicKey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDk0OTQxRUIyOUREODJENDAKUldSQUxkaWRzaDZVbE0vY1dXQk04L1g5OUlRZ09LMndBOVEwWmU1NEtLUU56dDVPMWkxNU5QTGYK"
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDk0OTQxRUIyOUREODJENDAKUldSQUxkaWRzaDZVbE0vY1dXQk04L1g5OUlRZ09LMndBOVEwWmU1NEtLUU56dDVPMWkxNU5QTGYK"
     }
   },
   "bundle": {
