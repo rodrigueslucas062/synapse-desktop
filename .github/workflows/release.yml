@@ -1,4 +1,4 @@
-name: Tauri Build
+name: Build Tauri App
 
 on:
   push:
@@ -7,13 +7,21 @@ on:
 
 jobs:
   build:
+    runs-on: windows-latest
     permissions:
       contents: write
-    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
 
-      - uses: tauri-apps/tauri-action@v0.5.20
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - uses: tauri-apps/tauri-action@v1
         with:
           tagName: ${{ github.ref_name }}
           releaseName: "Release ${{ github.ref_name }}"
