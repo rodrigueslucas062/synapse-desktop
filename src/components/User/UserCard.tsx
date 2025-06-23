@@ -74,9 +74,9 @@ export const UserConfig = () => {
           <Tabs.Content value="user" className="space-y-6">
             <h1 className="text-2xl font-semibold">Perfil do Usuário</h1>
             <div className="flex items-center space-x-4">
-              <Avatar radius="full" src={currentUser?.photoURL} fallback="LR" />
+              <Avatar radius="full" className="rounded-full" src={currentUser?.photoURL} fallback="LR" />
               <div>
-                <p className="text-lg font-semibold">{currentUser?.name}</p>
+                <p className="text-lg font-semibold">{currentUser?.displayName}</p>
                 <p className="text-gray-600">{currentUser?.email}</p>
               </div>
             </div>
