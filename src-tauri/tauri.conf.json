@@ -27,7 +27,7 @@
     "updater": {
       "active": true,
       "endpoints": [
-        "https://github.com/rodrigueslucas062/synapse-desktop/releases/download/0.3.0/latest.json"
+        "https://github.com/rodrigueslucas062/synapse-desktop/releases/latest/download/latest.json"
       ],
       "windows": {
         "installMode": "passive"
