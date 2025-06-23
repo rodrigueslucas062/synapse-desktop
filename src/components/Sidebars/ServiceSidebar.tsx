@@ -17,6 +17,7 @@ import {
 import * as Tooltip from "@radix-ui/react-tooltip";
 import { useTabs } from "../Context/tabsContext/tabsContext";
 import { UserConfig } from "../User/UserCard";
+import { AppVersion } from "@/utils/appversion";
 
 const navItems = [
   {
@@ -101,7 +102,7 @@ export function ServiceSidebar({
           </SidebarGroup>
         </SidebarContent>
         <SidebarFooter>
-          <div className="text-xs text-gray-500">v 0.1.0</div>
+          {AppVersion()}
         </SidebarFooter>
       </Sidebar>
 
@@ -114,7 +115,7 @@ export function ServiceSidebar({
         <SidebarContent>
           <SidebarGroup className="px-0">
             <SidebarGroupContent>
-              <div>teste</div>
+              <div>testes</div>
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
