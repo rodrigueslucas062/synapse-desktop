@@ -8,14 +8,14 @@ import { Toaster } from "sonner";
 
 function App() {
   return (
-    <Theme appearance="dark">
-      <ThemeProvider>
+    <ThemeProvider>
+      <Theme appearance="dark">
         <Layout>
           <Toaster richColors />
           <Synapse />
         </Layout>
-      </ThemeProvider>
-    </Theme>
+      </Theme>
+    </ThemeProvider>
   );
 }
 
