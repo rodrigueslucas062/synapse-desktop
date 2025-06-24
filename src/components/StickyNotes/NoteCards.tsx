@@ -52,7 +52,7 @@ export const NoteCards = ({
                 addSuffix: true,
               })}
             </span>
-            <p className="leading-6 font-semibold text-zinc-900 whitespace-pre-wrap">
+            <p className="leading-6 font-semibold text-gray-300 whitespace-pre-wrap">
               {content}
             </p>
           </div>
