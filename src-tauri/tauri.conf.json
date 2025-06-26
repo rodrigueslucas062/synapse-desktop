@@ -33,7 +33,7 @@
         "installMode": "passive"
       },
       "privateKey": "myapp.key",
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IERGNDE1NzdFQkVERDIzQjkKUldTNUk5MitmbGRCM3ppVWQ2cHRqb3owcGxuOEdIdTl3c1Y2Uk40V1pxWkJTWnNrV1VrTWdwNG8K"
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEFDMTY5OEQxNEU2NDY0QjIKUldTeVpHUk8wWmdXcklEbjJnRjhTcmtWWlo0b1V5R2pSaUI4UXplbkcvTzgvaUVKclJlbDVSMUsK"
     }
   },
   "bundle": {
