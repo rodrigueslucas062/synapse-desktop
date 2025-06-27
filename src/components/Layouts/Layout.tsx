@@ -4,6 +4,7 @@ import { ServiceSidebar } from "../Sidebars/ServiceSidebar";
 import { ProviderLayout } from "./ProviderLayout";
 import { IntegrationSidebar } from "../Sidebars/IntegrationSidebar";
 import { useAutoUpdate } from "@/utils/UpdateChecker";
+import { UpdateWatcher } from "../ui/UpdateWatcher";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -26,6 +27,7 @@ export const Layout = ({ children }: LayoutProps) => {
         <main className="flex-1 p-4 overflow-y-auto">{children}</main>
       </div>
       <IntegrationSidebar />
+      <UpdateWatcher />
     </ProviderLayout>
   );
 };

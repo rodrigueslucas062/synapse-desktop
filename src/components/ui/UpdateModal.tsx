@@ -17,7 +17,7 @@ export function UpdateModal({ open, onClose, release, onInstall }: Props) {
     <Dialog.Root open={open} onOpenChange={onClose}>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-50 z-50" />
-        <Dialog.Content className="fixed z-50 top-1/2 left-1/2 max-w-lg w-full -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white p-6 shadow-lg">
+        <Dialog.Content className="fixed z-50 top-1/2 left-1/2 max-w-lg w-full -translate-x-1/2 -translate-y-1/2 rounded-xl bg-zinc-900 p-6 shadow-lg">
           <Dialog.Title className="text-xl font-bold">
             Nova versão disponível: {release.version}
           </Dialog.Title>
@@ -30,13 +30,13 @@ export function UpdateModal({ open, onClose, release, onInstall }: Props) {
           <div className="mt-6 flex justify-end gap-3">
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-zinc-200 text-sm rounded hover:bg-zinc-300"
+              className="px-4 py-2 bg-zinc-200 text-zinc-800 text-sm rounded hover:bg-zinc-300"
             >
               Mais tarde
             </button>
             <button
               onClick={onInstall}
-              className="px-4 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
+              className="px-4 py-2 bg-purple-600 text-white text-sm rounded hover:bg-purple-700"
             >
               Instalar agora
             </button>

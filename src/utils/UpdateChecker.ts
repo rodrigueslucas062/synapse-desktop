@@ -8,7 +8,6 @@ export function useAutoUpdate() {
     (async () => {
       try {
         const update = await check();
-        console.log("Verificando atualizações automáticas...");
 
         if (update) {
           toast.info(`Atualização disponível: ${update.version}`);

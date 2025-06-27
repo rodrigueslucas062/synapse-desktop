@@ -6,19 +6,12 @@ import { SignInIcon, SignOutIcon } from "@phosphor-icons/react";
 import * as Tabs from "@radix-ui/react-tabs";
 import { useUpdateChecker } from "@/hooks/useUpdateChecker";
 import { useUserConfiguration } from "@/hooks/useUserConfigurations";
-import { UpdateModal } from "../ui/UpdateModal";
 
 export const UserConfig = () => {
   const { isAuthenticated, currentUser, logout } = useAuth();
   const { config, updateConfig } = useUserConfiguration();
-  const {
-    updateAvailable,
-    releaseData,
-    modalOpen,
-    setModalOpen,
-    handleInstallNow,
-    triggerManualUpdate,
-  } = useUpdateChecker();
+  const { updateAvailable, setModalOpen, triggerManualUpdate } =
+    useUpdateChecker();
 
   const UserInfo = () => (
     <div className="bg-zinc-800 hover:bg-zinc-700 p-2 rounded-lg flex items-center">
@@ -87,7 +80,9 @@ export const UserConfig = () => {
         </Tabs.Content>
 
         <Tabs.Content value="settings" className="space-y-6">
-          <h1 className="text-2xl font-semibold">Configurações do Aplicativo</h1>
+          <h1 className="text-2xl font-semibold">
+            Configurações do Aplicativo
+          </h1>
 
           <div className="space-y-4">
             <div>
@@ -115,9 +110,7 @@ export const UserConfig = () => {
               <input
                 type="checkbox"
                 checked={config.autoUpdate}
-                onChange={(e) =>
-                  updateConfig({ autoUpdate: e.target.checked })
-                }
+                onChange={(e) => updateConfig({ autoUpdate: e.target.checked })}
                 className="h-4 w-4 rounded border-gray-300 text-purple-600"
               />
             </div>
@@ -144,15 +137,6 @@ export const UserConfig = () => {
           </button>
         </Tabs.Content>
       </div>
-
-      {releaseData && (
-        <UpdateModal
-          open={modalOpen}
-          onClose={() => setModalOpen(false)}
-          release={releaseData}
-          onInstall={handleInstallNow}
-        />
-      )}
     </Tabs.Root>
   );
 
