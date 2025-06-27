@@ -1,6 +1,6 @@
 [package]
-name = "synapse-desktop"
-version = "0.2.0"
+name = "synapse"
+version = "0.7.0"
 description = "A Tauri App"
 authors = ["you"]
 edition = "2021"
