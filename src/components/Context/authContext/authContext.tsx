@@ -39,7 +39,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const store = await load("auth.dat", { autoSave: true });
       const localUser = await store.get("user");
 
-      console.log("Local user from store:", localUser);
       if (localUser) {
         setCurrentUser(localUser);
       }
