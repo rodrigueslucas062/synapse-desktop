@@ -3,7 +3,6 @@ import { SecondarySidebarTrigger, SidebarTrigger } from "../ui/sidebar";
 import { ServiceSidebar } from "../Sidebars/ServiceSidebar";
 import { ProviderLayout } from "./ProviderLayout";
 import { IntegrationSidebar } from "../Sidebars/IntegrationSidebar";
-import { useAutoUpdate } from "@/utils/UpdateChecker";
 import { UpdateWatcher } from "../ui/UpdateWatcher";
 
 type LayoutProps = {
@@ -11,7 +10,6 @@ type LayoutProps = {
 };
 
 export const Layout = ({ children }: LayoutProps) => {
-  useAutoUpdate();
 
   return (
     <ProviderLayout>
